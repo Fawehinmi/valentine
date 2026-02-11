@@ -93,7 +93,7 @@ export default function ValentinePage() {
       {/* Question */}
       {stage === "question" && (
         <div className="text-center z-10">
-          <h1 className="text-4xl font-bold text-rose-600">
+          <h1 className="text-2xl font-bold text-rose-600">
             Precious, will you be my Valentine? 💘
           </h1>
           <div className="flex justify-center gap-6 mt-12">
@@ -142,25 +142,25 @@ export default function ValentinePage() {
               );
             })}
           </div>
-          <h2 className="text-4xl font-bold text-rose-600 mt-10">
+          <h2 className="text-2xl font-bold text-rose-600 mt-10">
             She said YES 💖🎆
           </h2>
         </div>
       )}
       {stage === "ready2" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-3xl font-bold text-rose-600 mb-4">Okayyy… 😌</h2>
-          <p className="text-2xl text-gray-600">
+          <h2 className="text-2xl font-bold text-rose-600 mb-4">Okayyy… 😌</h2>
+          <p className="text-xl text-gray-600">
             This is where it gets interesting 👀✨
           </p>
         </div>
       )}
       {stage === "ready3" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-3xl font-bold text-rose-600 mb-4">
+          <h2 className="text-2xl font-bold text-rose-600 mb-4">
             One last thing…
           </h2>
-          <p className="text-2xl text-gray-600">
+          <p className="text-xl text-gray-600">
             Once you choose, there’s no going back 😏💘
           </p>
         </div>
@@ -169,7 +169,7 @@ export default function ValentinePage() {
       {/* GIFTS */}
       {stage === "gifts" && (
         <div className="text-center z-10">
-          <h2 className="text-3xl font-bold text-rose-600 mb-3">
+          <h2 className="text-2xl font-bold text-rose-600 mb-3">
             Pick a gift 🎁
           </h2>
           <p className="text-gray-600 mb-8 text-xl">
@@ -192,17 +192,14 @@ export default function ValentinePage() {
       {/* REVEAL */}
       {stage === "reveal" && selectedGift && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-3xl font-bold text-rose-600 mb-6">
+          <h2 className="text-2xl font-bold text-rose-600 mb-6">
             You picked {selectedGift} 💖
           </h2>
-          <div className="relative w-64 h-64 mx-auto rounded-xl overflow-hidden shadow-xl">
-            <Image
-              src={`/${selectedGift}.jpg`}
-              alt="Gift"
-              fill
-              className="object-cover"
-            />
+
+          <div className="big-reveal-box">
+            🎁
           </div>
+
           <p className="text-gray-600 mt-6 text-xl">
             Screenshot this and send it to me 😘
           </p>
@@ -216,6 +213,24 @@ export default function ValentinePage() {
 
       {/* STYLES */}
       <style jsx>{`
+        .big-reveal-box {
+          width: 260px;
+          height: 260px;
+          margin: 0 auto;
+          border-radius: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 140px; /* makes 🎁 big */
+          position: relative;
+          box-shadow:
+            0 10px 40px rgba(0, 0, 0, 0.15),
+            inset 0 2px 6px rgba(255, 255, 255, 0.6);
+          animation: floatGift 2.5s ease-in-out infinite;
+        }
+
+        
+
         .love {
           position: absolute;
           bottom: -40px;
