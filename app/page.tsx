@@ -28,7 +28,7 @@ export default function ValentinePage() {
   useEffect(() => {
     const picked = localStorage.getItem("giftPicked");
     if (picked) {
-      // setStage("already");
+      setStage("already");
     }
   }, []);
 
