@@ -7,9 +7,21 @@ export default function ValentinePage() {
   const [yesScale, setYesScale] = useState(1);
   const [noScale, setNoScale] = useState(1);
   const [noIndex, setNoIndex] = useState(0);
+
   const [stage, setStage] = useState<
-    "question" | "ready1" | "ready2" | "ready3" | "gifts" | "reveal" | "already"
-  >("question");
+    | "intro1"
+    | "intro2"
+    | "intro3"
+    | "intro4"
+    | "question"
+    | "ready1"
+    | "ready2"
+    | "ready3"
+    | "gifts"
+    | "reveal"
+    | "already"
+  >("intro1");
+
   const [selectedGift, setSelectedGift] = useState<string | null>(null);
 
   const noMessages = [
@@ -17,19 +29,30 @@ export default function ValentinePage() {
     "No Again 😢",
     "Please, Precious... 💕",
     "Come on… 😭",
-
     "I really need a Yes! 💖",
     "Are you sure about this? 😢",
     "Think about us! 💘",
   ];
 
-  // Check if gift already picked
+  // 🎬 STORY TRANSITIONS
   useEffect(() => {
-    const picked = localStorage.getItem("giftPicked");
-    if (picked) {
-      // setStage("already");
+    let timer: NodeJS.Timeout;
+
+    if (stage === "intro1") {
+      timer = setTimeout(() => setStage("intro2"), 3500);
     }
-  }, []);
+    if (stage === "intro2") {
+      timer = setTimeout(() => setStage("intro3"), 4000);
+    }
+    if (stage === "intro3") {
+      timer = setTimeout(() => setStage("intro4"), 4000);
+    }
+    if (stage === "intro4") {
+      timer = setTimeout(() => setStage("question"), 4000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [stage]);
 
   const handleNoClick = () => {
     setYesScale((p) => p + 0.2);
@@ -39,15 +62,15 @@ export default function ValentinePage() {
 
   const handleYesClick = () => {
     setStage("ready1");
-    setTimeout(() => setStage("ready2"), 6000);
-    setTimeout(() => setStage("ready3"), 9600);
-    setTimeout(() => setStage("gifts"), 12500);
+    setTimeout(() => setStage("ready2"), 5000);
+    setTimeout(() => setStage("ready3"), 8500);
+    setTimeout(() => setStage("gifts"), 11500);
   };
 
   const handleGiftClick = (gift: string) => {
     setSelectedGift(gift);
     setStage("reveal");
-    localStorage.setItem("giftPicked", gift); // save status
+    localStorage.setItem("giftPicked", gift);
   };
 
   const fireworkColors = [
@@ -78,24 +101,51 @@ export default function ValentinePage() {
         ))}
       </div>
 
-      {/* Already picked */}
-      {stage === "already" && (
-        <div className="text-center z-10">
-          <h2 className="text-3xl font-bold text-rose-600 mb-6">
-            You’ve already picked your gift 💖
+      {/* ================= STORY INTRO ================= */}
+
+      {stage === "intro1" && (
+        <div className="text-center z-10 animate-reveal">
+          <h2 className="text-2xl font-semibold text-rose-600">
+            I wasn’t planning to do this…
           </h2>
-          <p className="text-gray-600 mt-6 text-xl">
-            Thanks for your response 😘
+        </div>
+      )}
+
+      {stage === "intro2" && (
+        <div className="text-center z-10 animate-reveal">
+          <h2 className="text-2xl font-semibold text-rose-600">
+            But then I met you, Precious.
+          </h2>
+        </div>
+      )}
+
+      {stage === "intro3" && (
+        <div className="text-center z-10 animate-reveal">
+          <h2 className="text-2xl font-semibold text-rose-600">
+            And somehow… things just felt different.
+          </h2>
+        </div>
+      )}
+
+      {stage === "intro4" && (
+        <div className="text-center z-10 animate-reveal">
+          <h2 className="text-2xl font-semibold text-rose-600">
+            So before I overthink it…
+          </h2>
+          <p className="text-gray-600 mt-4 text-lg">
+            I need to ask you something.
           </p>
         </div>
       )}
 
-      {/* Question */}
+      {/* ================= QUESTION ================= */}
+
       {stage === "question" && (
-        <div className="text-center z-10">
+        <div className="text-center z-10 animate-reveal">
           <h1 className="text-2xl font-bold text-rose-600">
             Precious, will you be my Valentine? 💘
           </h1>
+
           <div className="flex justify-center gap-6 mt-12">
             <button
               onClick={handleYesClick}
@@ -104,6 +154,7 @@ export default function ValentinePage() {
             >
               Yes 💖
             </button>
+
             <button
               onClick={handleNoClick}
               style={{ transform: `scale(${noScale})` }}
@@ -115,7 +166,8 @@ export default function ValentinePage() {
         </div>
       )}
 
-      {/* READY layers */}
+      {/* ================= YES FLOW ================= */}
+
       {stage === "ready1" && (
         <div className="text-center z-10 animate-reveal">
           <video
@@ -157,6 +209,7 @@ export default function ValentinePage() {
           </h2>
         </div>
       )}
+
       {stage === "ready2" && (
         <div className="text-center z-10 animate-reveal">
           <h2 className="text-2xl font-bold text-rose-600 mb-4">Okayyy… 😌</h2>
@@ -165,6 +218,7 @@ export default function ValentinePage() {
           </p>
         </div>
       )}
+
       {stage === "ready3" && (
         <div className="text-center z-10 animate-reveal">
           <h2 className="text-2xl font-bold text-rose-600 mb-4">
@@ -176,7 +230,8 @@ export default function ValentinePage() {
         </div>
       )}
 
-      {/* GIFTS */}
+      {/* ================= GIFTS ================= */}
+
       {stage === "gifts" && (
         <div className="text-center z-10">
           <h2 className="text-2xl font-bold text-rose-600 mb-3">
@@ -208,41 +263,26 @@ export default function ValentinePage() {
 
           <div className="big-reveal-box">🎁</div>
 
-          <p className="text-gray-600 mt-6 text-xl">
+          <p className="text-gray-600 mt-1 text-xl">
             Screenshot this and send it to me 😘
           </p>
         </div>
       )}
 
-      {/* DESKTOP BLOCK */}
+      {/* Desktop Block */}
       <div className="hidden md:flex min-h-screen items-center justify-center bg-black text-white text-center px-6">
         <p className="text-xl">📱 Please open this on your phone</p>
       </div>
 
       {/* STYLES */}
       <style jsx>{`
-        .big-reveal-box {
-          width: 260px;
-          height: 260px;
-          margin: 0 auto;
-          border-radius: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 140px; /* makes 🎁 big */
-          position: relative;
-          box-shadow:
-            0 10px 40px rgba(0, 0, 0, 0.15),
-            inset 0 2px 6px rgba(255, 255, 255, 0.6);
-          animation: floatGift 2.5s ease-in-out infinite;
-        }
-
         .love {
           position: absolute;
           bottom: -40px;
           animation: floatUp 14s linear infinite;
           opacity: 0.4;
         }
+
         @keyframes floatUp {
           0% {
             transform: translateY(0);
@@ -257,33 +297,6 @@ export default function ValentinePage() {
           }
         }
 
-        .fireworks-container {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          overflow: hidden;
-        }
-        .firework {
-          position: absolute;
-          top: 50%;
-          border-radius: 50%;
-          animation: explode 1.5s ease-out infinite;
-        }
-        @keyframes explode {
-          0% {
-            transform: translateY(0) scale(0);
-            opacity: 1;
-          }
-          100% {
-            transform: translate(
-                calc(-50px + 100px * var(--rand)),
-                calc(-50px + 100px * var(--rand))
-              )
-              scale(2);
-            opacity: 0;
-          }
-        }
-
         .gift-box {
           font-size: 46px;
           padding: 20px;
@@ -293,6 +306,7 @@ export default function ValentinePage() {
           animation: bounce 1.8s infinite;
           position: relative;
         }
+
         .gift-letter {
           position: absolute;
           top: -14px;
@@ -308,6 +322,7 @@ export default function ValentinePage() {
           justify-content: center;
           font-size: 18px;
         }
+
         @keyframes bounce {
           0%,
           100% {
@@ -318,12 +333,35 @@ export default function ValentinePage() {
           }
         }
 
+        .big-reveal-box {
+          width: 260px;
+          height: 260px;
+          margin: 0 auto;
+          border-radius: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 140px;
+          animation: floatGift 2.5s ease-in-out infinite;
+        }
+
+        @keyframes floatGift {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
         .animate-reveal {
           animation: reveal 0.6s ease-out;
         }
+
         @keyframes reveal {
           from {
-            transform: scale(0.7);
+            transform: scale(0.8);
             opacity: 0;
           }
           to {
