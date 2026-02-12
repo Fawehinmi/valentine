@@ -38,18 +38,10 @@ export default function ValentinePage() {
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
-    if (stage === "intro1") {
-      timer = setTimeout(() => setStage("intro2"), 3500);
-    }
-    if (stage === "intro2") {
-      timer = setTimeout(() => setStage("intro3"), 4000);
-    }
-    if (stage === "intro3") {
-      timer = setTimeout(() => setStage("intro4"), 4000);
-    }
-    if (stage === "intro4") {
-      timer = setTimeout(() => setStage("question"), 4000);
-    }
+    if (stage === "intro1") timer = setTimeout(() => setStage("intro2"), 3500);
+    if (stage === "intro2") timer = setTimeout(() => setStage("intro3"), 4000);
+    if (stage === "intro3") timer = setTimeout(() => setStage("intro4"), 4000);
+    if (stage === "intro4") timer = setTimeout(() => setStage("question"), 4000);
 
     return () => clearTimeout(timer);
   }, [stage]);
@@ -70,7 +62,7 @@ export default function ValentinePage() {
   const handleGiftClick = (gift: string) => {
     setSelectedGift(gift);
     setStage("reveal");
-    localStorage.setItem("giftPicked", gift);
+    localStorage.setItem("giftPicked", gift); // keep your storage
   };
 
   const fireworkColors = [
@@ -83,17 +75,18 @@ export default function ValentinePage() {
   ];
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-white flex items-center justify-center md:hidden px-6">
+    <main className="relative min-h-screen overflow-hidden flex items-center justify-center md:hidden px-6 bg-gradient-to-br from-pink-200 via-pink-300 to-rose-400">
+
       {/* Floating Hearts */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(5)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <span
             key={i}
             className="love"
             style={{
-              left: `${15 + i * 15}%`,
-              animationDelay: `${i * 2}s`,
-              fontSize: "22px",
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              fontSize: `${20 + Math.random() * 20}px`,
             }}
           >
             💕
@@ -101,11 +94,22 @@ export default function ValentinePage() {
         ))}
       </div>
 
-      {/* ================= STORY INTRO ================= */}
+      {/* Already picked */}
+      {stage === "already" && (
+        <div className="text-center z-10">
+          <h2 className="text-3xl font-bold text-rose-600 mb-6">
+            You’ve already picked your gift 💖
+          </h2>
+          <p className="text-white mt-6 text-xl">
+            Thanks for your response 😘
+          </p>
+        </div>
+      )}
 
+      {/* Story intros */}
       {stage === "intro1" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-2xl font-semibold text-rose-600">
+          <h2 className="text-2xl font-semibold text-white">
             I wasn’t planning to do this…
           </h2>
         </div>
@@ -113,7 +117,7 @@ export default function ValentinePage() {
 
       {stage === "intro2" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-2xl font-semibold text-rose-600">
+          <h2 className="text-2xl font-semibold text-white">
             But then I met you, Precious.
           </h2>
         </div>
@@ -121,7 +125,7 @@ export default function ValentinePage() {
 
       {stage === "intro3" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-2xl font-semibold text-rose-600">
+          <h2 className="text-2xl font-semibold text-white">
             And somehow… things just felt different.
           </h2>
         </div>
@@ -129,36 +133,33 @@ export default function ValentinePage() {
 
       {stage === "intro4" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-2xl font-semibold text-rose-600">
+          <h2 className="text-2xl font-semibold text-white">
             So before I overthink it…
           </h2>
-          <p className="text-gray-600 mt-4 text-lg">
+          <p className="text-white mt-4 text-lg">
             I need to ask you something.
           </p>
         </div>
       )}
 
-      {/* ================= QUESTION ================= */}
-
+      {/* Question */}
       {stage === "question" && (
         <div className="text-center z-10 animate-reveal">
-          <h1 className="text-2xl font-bold text-rose-600">
+          <h1 className="text-2xl font-bold text-white">
             Precious, will you be my Valentine? 💘
           </h1>
-
           <div className="flex justify-center gap-6 mt-12">
             <button
               onClick={handleYesClick}
               style={{ transform: `scale(${yesScale})` }}
-              className="transition-transform duration-300 bg-rose-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg"
+              className="transition-transform duration-300 bg-white text-rose-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg"
             >
               Yes 💖
             </button>
-
             <button
               onClick={handleNoClick}
               style={{ transform: `scale(${noScale})` }}
-              className="transition-transform duration-300 bg-gray-100 text-rose-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg"
+              className="transition-transform duration-300 bg-rose-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg"
             >
               {noMessages[noIndex]}
             </button>
@@ -166,10 +167,9 @@ export default function ValentinePage() {
         </div>
       )}
 
-      {/* ================= YES FLOW ================= */}
-
+      {/* Ready 1 - she said yes */}
       {stage === "ready1" && (
-        <div className="text-center z-10 animate-reveal">
+        <div className="text-center z-10 animate-reveal relative">
           <video
             width="600"
             autoPlay
@@ -179,7 +179,7 @@ export default function ValentinePage() {
           >
             <source src="fireworks.mp4" type="video/mp4" />
             Your browser does not support the video tag.
-          </video>{" "}
+          </video>
           <div className="fireworks-container">
             {[...Array(20)].map((_, i) => {
               const size = Math.random() * 6 + 4;
@@ -204,7 +204,7 @@ export default function ValentinePage() {
               );
             })}
           </div>
-          <h2 className="text-2xl font-bold text-rose-600 mt-10">
+          <h2 className="text-2xl font-bold text-white mt-10">
             She said YES 💖🎆
           </h2>
         </div>
@@ -212,8 +212,8 @@ export default function ValentinePage() {
 
       {stage === "ready2" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-2xl font-bold text-rose-600 mb-4">Okayyy… 😌</h2>
-          <p className="text-xl text-gray-600">
+          <h2 className="text-2xl font-bold text-white mb-4">Okayyy… 😌</h2>
+          <p className="text-xl text-white">
             This is where it gets interesting 👀✨
           </p>
         </div>
@@ -221,23 +221,22 @@ export default function ValentinePage() {
 
       {stage === "ready3" && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-2xl font-bold text-rose-600 mb-4">
+          <h2 className="text-2xl font-bold text-white mb-4">
             One last thing…
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-white">
             Once you choose, there’s no going back 😏💘
           </p>
         </div>
       )}
 
-      {/* ================= GIFTS ================= */}
-
+      {/* Gifts */}
       {stage === "gifts" && (
         <div className="text-center z-10">
-          <h2 className="text-2xl font-bold text-rose-600 mb-3">
+          <h2 className="text-2xl font-bold text-white mb-3">
             Pick a gift 🎁
           </h2>
-          <p className="text-gray-600 mb-8 text-xl">
+          <p className="text-white mb-8 text-xl">
             Screenshot the response and send it to me 💕
           </p>
           <div className="flex gap-6 justify-center">
@@ -254,47 +253,54 @@ export default function ValentinePage() {
         </div>
       )}
 
-      {/* REVEAL */}
+      {/* Reveal */}
       {stage === "reveal" && selectedGift && (
         <div className="text-center z-10 animate-reveal">
-          <h2 className="text-2xl font-bold text-rose-600 mb-6">
+          <h2 className="text-2xl font-bold text-white mb-6">
             You picked {selectedGift} 💖
           </h2>
 
           <div className="big-reveal-box">🎁</div>
 
-          <p className="text-gray-600 mt-1 text-xl">
+          <p className="text-white mt-6 text-xl">
             Screenshot this and send it to me 😘
           </p>
         </div>
       )}
 
-      {/* Desktop Block */}
+      {/* Desktop */}
       <div className="hidden md:flex min-h-screen items-center justify-center bg-black text-white text-center px-6">
         <p className="text-xl">📱 Please open this on your phone</p>
       </div>
 
-      {/* STYLES */}
       <style jsx>{`
         .love {
           position: absolute;
           bottom: -40px;
           animation: floatUp 14s linear infinite;
-          opacity: 0.4;
+          opacity: 0.5;
+        }
+        @keyframes floatUp {
+          0% { transform: translateY(0); opacity: 0; }
+          15% { opacity: 0.5; }
+          100% { transform: translateY(-110vh); opacity: 0; }
         }
 
-        @keyframes floatUp {
-          0% {
-            transform: translateY(0);
-            opacity: 0;
-          }
-          15% {
-            opacity: 0.5;
-          }
-          100% {
-            transform: translateY(-110vh);
-            opacity: 0;
-          }
+        .fireworks-container {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          overflow: hidden;
+        }
+        .firework {
+          position: absolute;
+          top: 50%;
+          border-radius: 50%;
+          animation: explode 1.5s ease-out infinite;
+        }
+        @keyframes explode {
+          0% { transform: translateY(0) scale(0); opacity: 1; }
+          100% { transform: translate(calc(-50px + 100px * var(--rand)), calc(-50px + 100px * var(--rand))) scale(2); opacity: 0; }
         }
 
         .gift-box {
@@ -302,11 +308,10 @@ export default function ValentinePage() {
           padding: 20px;
           border-radius: 20px;
           background: #fff;
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 12px 30px rgba(0,0,0,0.12);
           animation: bounce 1.8s infinite;
           position: relative;
         }
-
         .gift-letter {
           position: absolute;
           top: -14px;
@@ -322,15 +327,9 @@ export default function ValentinePage() {
           justify-content: center;
           font-size: 18px;
         }
-
         @keyframes bounce {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
+          0%,100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
         }
 
         .big-reveal-box {
@@ -344,30 +343,17 @@ export default function ValentinePage() {
           font-size: 140px;
           animation: floatGift 2.5s ease-in-out infinite;
         }
-
         @keyframes floatGift {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
+          0%,100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
         }
 
         .animate-reveal {
           animation: reveal 0.6s ease-out;
         }
-
         @keyframes reveal {
-          from {
-            transform: scale(0.8);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
+          from { transform: scale(0.8); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
         }
       `}</style>
     </main>
