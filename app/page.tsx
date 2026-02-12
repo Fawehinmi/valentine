@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { Video } from "lucide-react";
 
 export default function ValentinePage() {
   const [yesScale, setYesScale] = useState(1);
@@ -27,7 +28,7 @@ export default function ValentinePage() {
   useEffect(() => {
     const picked = localStorage.getItem("giftPicked");
     if (picked) {
-      setStage("already");
+      // setStage("already");
     }
   }, []);
 
@@ -40,8 +41,8 @@ export default function ValentinePage() {
   const handleYesClick = () => {
     setStage("ready1");
     setTimeout(() => setStage("ready2"), 3000);
-    setTimeout(() => setStage("ready3"), 6600);
-    setTimeout(() => setStage("gifts"), 9500);
+    setTimeout(() => setStage("ready3"), 7600);
+    setTimeout(() => setStage("gifts"), 10500);
   };
 
   const handleGiftClick = (gift: string) => {
@@ -118,6 +119,16 @@ export default function ValentinePage() {
       {/* READY layers */}
       {stage === "ready1" && (
         <div className="text-center z-10 animate-reveal">
+          <video
+            width="600"
+            autoPlay
+            loop
+            muted
+            className="rounded-xl shadow-lg"
+          >
+            <source src="fireworks.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>{" "}
           <div className="fireworks-container">
             {[...Array(20)].map((_, i) => {
               const size = Math.random() * 6 + 4;
@@ -196,9 +207,7 @@ export default function ValentinePage() {
             You picked {selectedGift} 💖
           </h2>
 
-          <div className="big-reveal-box">
-            🎁
-          </div>
+          <div className="big-reveal-box">🎁</div>
 
           <p className="text-gray-600 mt-6 text-xl">
             Screenshot this and send it to me 😘
@@ -228,8 +237,6 @@ export default function ValentinePage() {
             inset 0 2px 6px rgba(255, 255, 255, 0.6);
           animation: floatGift 2.5s ease-in-out infinite;
         }
-
-        
 
         .love {
           position: absolute;
