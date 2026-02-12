@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Video } from "lucide-react";
 
 export default function ValentinePage() {
   const [yesScale, setYesScale] = useState(1);
