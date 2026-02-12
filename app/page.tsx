@@ -39,9 +39,9 @@ export default function ValentinePage() {
 
   const handleYesClick = () => {
     setStage("ready1");
-    setTimeout(() => setStage("ready2"), 3000);
-    setTimeout(() => setStage("ready3"), 7600);
-    setTimeout(() => setStage("gifts"), 10500);
+    setTimeout(() => setStage("ready2"), 6000);
+    setTimeout(() => setStage("ready3"), 9600);
+    setTimeout(() => setStage("gifts"), 12500);
   };
 
   const handleGiftClick = (gift: string) => {
