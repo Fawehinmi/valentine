@@ -41,10 +41,18 @@ export default function ValentinePage() {
     if (stage === "intro1") timer = setTimeout(() => setStage("intro2"), 3500);
     if (stage === "intro2") timer = setTimeout(() => setStage("intro3"), 4000);
     if (stage === "intro3") timer = setTimeout(() => setStage("intro4"), 4000);
-    if (stage === "intro4") timer = setTimeout(() => setStage("question"), 4000);
+    if (stage === "intro4")
+      timer = setTimeout(() => setStage("question"), 4000);
 
     return () => clearTimeout(timer);
   }, [stage]);
+
+  useEffect(() => {
+    const picked = localStorage.getItem("giftPicked");
+    if (picked) {
+      setStage("already");
+    }
+  }, []);
 
   const handleNoClick = () => {
     setYesScale((p) => p + 0.2);
@@ -76,7 +84,6 @@ export default function ValentinePage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden flex items-center justify-center md:hidden px-6 bg-gradient-to-br from-pink-200 via-pink-300 to-rose-400">
-
       {/* Floating Hearts */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(15)].map((_, i) => (
@@ -100,9 +107,7 @@ export default function ValentinePage() {
           <h2 className="text-3xl font-bold text-rose-600 mb-6">
             You’ve already picked your gift 💖
           </h2>
-          <p className="text-white mt-6 text-xl">
-            Thanks for your response 😘
-          </p>
+          <p className="text-white mt-6 text-xl">Thanks for your response 😘</p>
         </div>
       )}
 
@@ -233,9 +238,7 @@ export default function ValentinePage() {
       {/* Gifts */}
       {stage === "gifts" && (
         <div className="text-center z-10">
-          <h2 className="text-2xl font-bold text-white mb-3">
-            Pick a gift 🎁
-          </h2>
+          <h2 className="text-2xl font-bold text-white mb-3">Pick a gift 🎁</h2>
           <p className="text-white mb-8 text-xl">
             Screenshot the response and send it to me 💕
           </p>
@@ -281,9 +284,17 @@ export default function ValentinePage() {
           opacity: 0.5;
         }
         @keyframes floatUp {
-          0% { transform: translateY(0); opacity: 0; }
-          15% { opacity: 0.5; }
-          100% { transform: translateY(-110vh); opacity: 0; }
+          0% {
+            transform: translateY(0);
+            opacity: 0;
+          }
+          15% {
+            opacity: 0.5;
+          }
+          100% {
+            transform: translateY(-110vh);
+            opacity: 0;
+          }
         }
 
         .fireworks-container {
@@ -299,8 +310,18 @@ export default function ValentinePage() {
           animation: explode 1.5s ease-out infinite;
         }
         @keyframes explode {
-          0% { transform: translateY(0) scale(0); opacity: 1; }
-          100% { transform: translate(calc(-50px + 100px * var(--rand)), calc(-50px + 100px * var(--rand))) scale(2); opacity: 0; }
+          0% {
+            transform: translateY(0) scale(0);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(
+                calc(-50px + 100px * var(--rand)),
+                calc(-50px + 100px * var(--rand))
+              )
+              scale(2);
+            opacity: 0;
+          }
         }
 
         .gift-box {
@@ -308,7 +329,7 @@ export default function ValentinePage() {
           padding: 20px;
           border-radius: 20px;
           background: #fff;
-          box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
           animation: bounce 1.8s infinite;
           position: relative;
         }
@@ -328,8 +349,13 @@ export default function ValentinePage() {
           font-size: 18px;
         }
         @keyframes bounce {
-          0%,100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
         }
 
         .big-reveal-box {
@@ -344,16 +370,27 @@ export default function ValentinePage() {
           animation: floatGift 2.5s ease-in-out infinite;
         }
         @keyframes floatGift {
-          0%,100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
         }
 
         .animate-reveal {
           animation: reveal 0.6s ease-out;
         }
         @keyframes reveal {
-          from { transform: scale(0.8); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
+          from {
+            transform: scale(0.8);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
         }
       `}</style>
     </main>
